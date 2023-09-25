@@ -29,12 +29,10 @@ RUN set -x \
     && yum update -y \
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel iputils nc vim libcurl \
     && yum clean all
-RUN curl -SL https://github.com/alibaba/nacos/releases/download/${NACOS_VERSION}${HOT_FIX_FLAG}/nacos-server-${NACOS_VERSION}.tar.gz -o /home/nacos-server.tar.gz \
-    && tar -xzvf /home/nacos-server.tar.gz -C /home \
-    && rm -rf /home/nacos-server.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
+
+ADD nacos-server-2.2.3.tar.gz /home/nacos-server.tar.gz
+RUN rm -rf /home/nacos-server.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
-
-
 
 
 ADD bin/docker-startup.sh bin/docker-startup.sh
@@ -44,6 +42,7 @@ ADD conf/application.properties conf/application.properties
 # set startup log dir
 RUN mkdir -p logs \
 	&& touch logs/start.out \
+    # 强制建立目录或文件
 	&& ln -sf /dev/stdout start.out \
 	&& ln -sf /dev/stderr start.out
 RUN chmod +x bin/docker-startup.sh
