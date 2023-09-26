@@ -25,8 +25,10 @@ ARG HOT_FIX_FLAG=""
 
 WORKDIR $BASE_DIR
 
+# set -x 是显示脚本所有执行命令
 RUN set -x \
     && yum update -y \
+    # 表示在安装过程中自动应答所有问题（默认情况下，yum需要用户手动确认是否安装依赖包等操作
     && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel iputils nc vim libcurl \
     && yum clean all
 
