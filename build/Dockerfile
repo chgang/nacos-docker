@@ -27,7 +27,7 @@ WORKDIR $BASE_DIR
 
 RUN set -x \
     && yum update -y \
-    && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel iputils nc vim libcurl \
+    && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel iputils nc vim libcurl telnet iputils-ping net-tools \
     && yum clean all
 
 ADD nacos-server-2.2.3.tar.gz /home/nacos-server.tar.gz
