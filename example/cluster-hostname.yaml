@@ -3,7 +3,7 @@ services:
   nacos1:
     hostname: nacos1
     container_name: nacos1
-    image: nacos/nacos-server:${NACOS_VERSION}
+    image: nacos/nacos-server:2.2.3
     volumes:
       - ./cluster-logs/nacos1:/home/nacos/logs
     ports:
@@ -20,7 +20,7 @@ services:
 
   nacos2:
     hostname: nacos2
-    image: nacos/nacos-server:${NACOS_VERSION}
+    image: nacos/nacos-server:2.2.3
     container_name: nacos2
     volumes:
       - ./cluster-logs/nacos2:/home/nacos/logs
@@ -37,7 +37,7 @@ services:
         condition: service_healthy
   nacos3:
     hostname: nacos3
-    image: nacos/nacos-server:${NACOS_VERSION}
+    image: nacos/nacos-server:2.2.3
     container_name: nacos3
     volumes:
       - ./cluster-logs/nacos3:/home/nacos/logs
@@ -54,10 +54,7 @@ services:
         condition: service_healthy
   mysql:
     container_name: mysql
-    build:
-      context: .
-      dockerfile: ./image/mysql/5.7/Dockerfile
-    image: example/mysql:5.7
+    image: mysql/mysql:5.7
     env_file:
       - ../env/mysql.env
     volumes:

@@ -28,12 +28,12 @@ WORKDIR $BASE_DIR
 # set -x 是显示脚本所有执行命令
 RUN set -x \
     && yum update -y \
-    # 表示在安装过程中自动应答所有问题（默认情况下，yum需要用户手动确认是否安装依赖包等操作
-    && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel iputils nc vim libcurl \
+    && yum install -y java-1.8.0-openjdk java-1.8.0-openjdk-devel iputils nc vim libcurl telnet iputils-ping net-tools \
     && yum clean all
 
-ADD nacos-server-2.2.3.tar.gz /home/nacos-server.tar.gz
-RUN rm -rf /home/nacos-server.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
+COPY nacos-server-2.2.3.tar.gz /home/nacos-server.tar.gz
+RUN tar -xzvf /home/nacos-server.tar.gz -C /home \
+    && rm -rf /home/nacos-server.tar.gz /home/nacos/bin/* /home/nacos/conf/*.properties /home/nacos/conf/*.example /home/nacos/conf/nacos-mysql.sql \
     && ln -snf /usr/share/zoneinfo/$TIME_ZONE /etc/localtime && echo $TIME_ZONE > /etc/timezone
 
 
@@ -44,7 +44,6 @@ ADD conf/application.properties conf/application.properties
 # set startup log dir
 RUN mkdir -p logs \
 	&& touch logs/start.out \
-    # 强制建立目录或文件
 	&& ln -sf /dev/stdout start.out \
 	&& ln -sf /dev/stderr start.out
 RUN chmod +x bin/docker-startup.sh
